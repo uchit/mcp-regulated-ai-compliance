@@ -97,3 +97,18 @@ The non-mechanical work is the **crosswalk JSON** (3 hours of careful drafting +
 - **HTTP transport.** Add only if 3+ enterprise users ask.
 
 Keep v1.0 small + sharp + obviously open-source.
+
+---
+
+## v0.2 — HTTP transport (unlocks Smithery + browser clients)
+
+**Trigger:** Smithery rejected v0.1.0 because they only accept hosted HTTP servers.
+
+**Scope:**
+1. Add `@modelcontextprotocol/sdk/server/streamableHttp.js` transport alongside stdio (same handlers, dual-bind)
+2. Deploy to Cloudflare Workers behind `mcp.hellouchit.com` (zero cold-start, free tier handles 100K req/day, $0/mo at projected v0.1 traffic)
+3. Add `Authorization: Bearer` token for rate-limiting (optional — open-tier 60 rpm, signed-tier unlimited)
+4. Resubmit to Smithery with hosted URL
+5. Submit to OpenAI's MCP directory (also HTTP-only)
+
+**Effort:** ~1 day. Not a launch blocker — stdio + npm covers 95% of MCP adoption today.
