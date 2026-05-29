@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.github
+tests
+**/*.test.ts
+*.log
+.DS_Store
+.vscode
+distribution
+scope
+docs
+examples
