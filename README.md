@@ -59,6 +59,7 @@ mcp-regulated-ai-compliance/
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Provenance](https://img.shields.io/badge/npm-provenance%20signed-success)](https://search.sigstore.dev/?logIndex=1667445738)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-active-brightgreen)](https://registry.modelcontextprotocol.io/v0/servers?search=regulated-ai-compliance)
+[![Glama MCP score](https://glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance/badges/score.svg)](https://glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance)
 
 | Phase | Status |
 |---|---|
@@ -83,7 +84,7 @@ mcp-regulated-ai-compliance/
 |---|---|
 | npm | ✅ [`@hellouchit/mcp-regulated-ai-compliance@0.1.1`](https://www.npmjs.com/package/@hellouchit/mcp-regulated-ai-compliance) |
 | Official MCP Registry | ✅ [`io.github.uchit/mcp-regulated-ai-compliance`](https://registry.modelcontextprotocol.io/v0/servers?search=regulated-ai-compliance) |
-| Glama | ⏳ verification in progress |
+| Glama | ✅ [verified](https://glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance) |
 | mcp.so | ⏳ awaiting review |
 | PulseMCP | ⏳ auto-pulls from Official Registry (~24h) |
 | awesome-mcp-servers (Security) | ⏳ [PR #7084](https://github.com/punkpeye/awesome-mcp-servers/pull/7084) |
