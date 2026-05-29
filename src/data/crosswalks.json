@@ -1,0 +1,263 @@
+{
+  "version": "2026-05-30",
+  "license": "CC BY 4.0",
+  "source": "https://hellouchit.com/dataset/",
+  "maintainer": "Uchit Vyas — contact@hellouchit.com",
+  "description": "Crosswalk matrix between regulatory frameworks. Each entry anchors on one source requirement and maps to equivalent/overlapping requirements in other frameworks. Overlap strength: FULL (direct equivalence) · PARTIAL (substantial overlap with gaps) · NEW (requirement has no equivalent — new work required when adopting target framework).",
+  "frameworks": {
+    "eu_ai_act": { "label": "EU AI Act (Regulation EU 2024/1689)", "jurisdiction": "EU" },
+    "nist_ai_rmf": { "label": "NIST AI Risk Management Framework 1.0", "jurisdiction": "INTL" },
+    "iso_42001": { "label": "ISO/IEC 42001:2023", "jurisdiction": "INTL" },
+    "au_ai_safety": { "label": "AU Voluntary AI Safety Standard (DISR Aug 2024)", "jurisdiction": "AU" },
+    "apra_cps_230": { "label": "APRA CPS 230 Operational Risk Management", "jurisdiction": "AU" },
+    "apra_cps_234": { "label": "APRA CPS 234 Information Security", "jurisdiction": "AU" },
+    "oecd_ai": { "label": "OECD AI Principles (2024 update)", "jurisdiction": "INTL" },
+    "coe_cets_225": { "label": "Council of Europe Framework Convention on AI (CETS 225)", "jurisdiction": "INTL" },
+    "owasp_llm": { "label": "OWASP LLM Top 10", "jurisdiction": "INTL" },
+    "slsa": { "label": "SLSA v1.0", "jurisdiction": "INTL" },
+    "ssdf": { "label": "NIST SSDF (SP 800-218)", "jurisdiction": "INTL" },
+    "gdpr": { "label": "EU GDPR (Regulation EU 2016/679)", "jurisdiction": "EU" }
+  },
+  "entries": [
+    {
+      "id": "eu-ai-act-art-9-rms",
+      "framework": "eu_ai_act",
+      "reference": "Article 9",
+      "title": "Risk-management system (RMS)",
+      "interpretive_recitals": ["Recital 65", "Recital 66", "Recital 67"],
+      "mappings": {
+        "nist_ai_rmf": { "references": ["MAP 1.1", "MAP 1.5", "MAP 5.1", "MANAGE 1.2", "MANAGE 1.3", "MANAGE 2.1"], "overlap": "FULL", "notes": "Lifecycle risk identification → estimation → treatment → monitoring maps directly" },
+        "iso_42001": { "references": ["A.6.1", "A.6.2"], "overlap": "FULL", "notes": "A.6.1 AI risk assessment + A.6.2 AI risk treatment" },
+        "au_ai_safety": { "references": ["G2"], "overlap": "FULL", "notes": "Direct equivalent — voluntary G2 is the AU mirror" },
+        "apra_cps_230": { "references": ["§13", "§14", "§15"], "overlap": "PARTIAL", "notes": "Operational-risk management framework; AI-specific RMS sub-component required on top" },
+        "oecd_ai": { "references": ["1.4 Robustness, security, safety"], "overlap": "PARTIAL", "notes": "OECD is principle-based, not requirement-specific" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-10-data-governance",
+      "framework": "eu_ai_act",
+      "reference": "Article 10",
+      "title": "Data and data governance",
+      "interpretive_recitals": ["Recital 67", "Recital 68", "Recital 69", "Recital 70", "Recital 71", "Recital 72"],
+      "mappings": {
+        "nist_ai_rmf": { "references": ["MAP 2.1", "MAP 4.1", "MEASURE 2.7", "MEASURE 2.10"], "overlap": "FULL", "notes": "Data sourcing + bias + representativeness covered across MAP+MEASURE" },
+        "iso_42001": { "references": ["A.7", "A.7.2", "A.7.3"], "overlap": "FULL", "notes": "A.7 Data for AI systems with sub-controls for quality + sourcing" },
+        "au_ai_safety": { "references": ["G3"], "overlap": "FULL", "notes": "Data governance + system protection" },
+        "apra_cps_234": { "references": ["§21", "§22", "§23"], "overlap": "PARTIAL", "notes": "CPS 234 focuses on security of data assets; statistical-quality aspects of Art. 10 are not covered" },
+        "gdpr": { "references": ["Article 5(1)(c)", "Article 5(1)(d)"], "overlap": "PARTIAL", "notes": "Data minimisation + accuracy principles overlap; AI-specific bias-prevention is EU AI Act-NEW" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-11-tech-docs",
+      "framework": "eu_ai_act",
+      "reference": "Article 11 + Annex IV",
+      "title": "Technical documentation",
+      "interpretive_recitals": ["Recital 73", "Recital 74"],
+      "mappings": {
+        "nist_ai_rmf": { "references": ["GOVERN 1.6", "MEASURE 4.1"], "overlap": "PARTIAL", "notes": "NIST emphasises documentation but doesn't specify Annex-IV-equivalent structure" },
+        "iso_42001": { "references": ["A.4.6"], "overlap": "FULL", "notes": "A.4.6 AI system impact assessment + documentation" },
+        "au_ai_safety": { "references": ["G9"], "overlap": "FULL", "notes": "Records for third-party compliance assessment" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-12-record-keeping",
+      "framework": "eu_ai_act",
+      "reference": "Article 12",
+      "title": "Record-keeping (audit logs)",
+      "interpretive_recitals": ["Recital 75"],
+      "mappings": {
+        "nist_ai_rmf": { "references": ["GOVERN 1.6", "MEASURE 4.1", "MEASURE 4.2"], "overlap": "FULL", "notes": "Logging + traceability + monitoring" },
+        "iso_42001": { "references": ["A.9", "A.9.2"], "overlap": "FULL", "notes": "Communication + record-keeping controls" },
+        "au_ai_safety": { "references": ["G9"], "overlap": "FULL", "notes": "Records for third-party compliance assessment" },
+        "apra_cps_234": { "references": ["§21", "§22"], "overlap": "PARTIAL", "notes": "CPS 234 testing + monitoring obligations; per-decision logging is AI-specific addition" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-13-transparency",
+      "framework": "eu_ai_act",
+      "reference": "Article 13",
+      "title": "Transparency and provision of information to deployers",
+      "interpretive_recitals": ["Recital 72"],
+      "mappings": {
+        "nist_ai_rmf": { "references": ["MAP 1.2", "GOVERN 4.2"], "overlap": "FULL", "notes": "Documentation + stakeholder communication" },
+        "iso_42001": { "references": ["A.8", "A.8.2"], "overlap": "FULL", "notes": "Information for interested parties; information for users" },
+        "au_ai_safety": { "references": ["G6", "G8"], "overlap": "FULL", "notes": "G6 user-facing transparency + G8 supply-chain transparency" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-14-human-oversight",
+      "framework": "eu_ai_act",
+      "reference": "Article 14",
+      "title": "Human oversight",
+      "interpretive_recitals": ["Recital 73"],
+      "mappings": {
+        "nist_ai_rmf": { "references": ["GOVERN 1.3", "MAP 2.2", "MAP 3.5"], "overlap": "FULL", "notes": "Roles + responsibilities + oversight design" },
+        "iso_42001": { "references": ["A.9.2"], "overlap": "FULL", "notes": "Direct: A.9.2 Human oversight" },
+        "au_ai_safety": { "references": ["G5"], "overlap": "FULL", "notes": "Direct equivalent" },
+        "oecd_ai": { "references": ["1.2 Human-centred values"], "overlap": "PARTIAL", "notes": "Principle-level alignment" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-15-accuracy-robustness",
+      "framework": "eu_ai_act",
+      "reference": "Article 15",
+      "title": "Accuracy, robustness and cybersecurity",
+      "interpretive_recitals": ["Recital 74"],
+      "mappings": {
+        "nist_ai_rmf": { "references": ["MEASURE 2.5", "MEASURE 2.6", "MANAGE 4.2"], "overlap": "FULL", "notes": "Accuracy + adversarial robustness + monitoring" },
+        "iso_42001": { "references": ["A.6.2.5", "A.6.2.6"], "overlap": "FULL", "notes": "Verification + validation + deployment controls" },
+        "au_ai_safety": { "references": ["G4"], "overlap": "FULL", "notes": "Test + monitor in deployment" },
+        "owasp_llm": { "references": ["LLM01 Prompt Injection", "LLM02 Insecure Output Handling", "LLM06 Sensitive Information Disclosure"], "overlap": "PARTIAL", "notes": "OWASP covers cybersec dimension specifically" },
+        "apra_cps_234": { "references": ["§21", "§22", "§23"], "overlap": "PARTIAL", "notes": "Information-security testing maps to Art 15 cybersecurity sub-obligation" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-27-fria",
+      "framework": "eu_ai_act",
+      "reference": "Article 27",
+      "title": "Fundamental rights impact assessment (FRIA) for deployers",
+      "mappings": {
+        "nist_ai_rmf": { "references": ["MAP 1.2", "MAP 3.2"], "overlap": "PARTIAL", "notes": "Stakeholder + impact assessment; rights-specific framing is FRIA-NEW" },
+        "iso_42001": { "references": ["A.4.6"], "overlap": "PARTIAL", "notes": "Impact assessment structure" },
+        "au_ai_safety": { "references": ["G10"], "overlap": "PARTIAL", "notes": "Stakeholder engagement + fairness; rights framing differs" },
+        "gdpr": { "references": ["Article 35"], "overlap": "FULL", "notes": "DPIA structure carries over; AI-FRIA adds rights beyond data protection" }
+      }
+    },
+    {
+      "id": "eu-ai-act-art-50-transparency",
+      "framework": "eu_ai_act",
+      "reference": "Article 50",
+      "title": "Transparency for AI systems interacting with natural persons + AI-generated content",
+      "mappings": {
+        "au_ai_safety": { "references": ["G6"], "overlap": "FULL", "notes": "User-disclosure obligation" },
+        "iso_42001": { "references": ["A.8.2"], "overlap": "FULL", "notes": "Information for users" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g1-accountability",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 1",
+      "title": "Establish, implement and publish an accountability process",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 17"], "overlap": "FULL", "notes": "Quality management system / governance obligation" },
+        "nist_ai_rmf": { "references": ["GOVERN 1.1", "GOVERN 1.2", "GOVERN 1.5"], "overlap": "FULL", "notes": "Governance function" },
+        "iso_42001": { "references": ["A.4", "A.5.2", "A.5.3"], "overlap": "FULL", "notes": "Leadership + roles + reporting" },
+        "apra_cps_230": { "references": ["§13", "§14", "§15"], "overlap": "PARTIAL", "notes": "Operational-risk framework; AI-specific accountability adds named roles" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g2-risk-management",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 2",
+      "title": "Establish and implement a risk-management process",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 9"], "overlap": "FULL", "notes": "Direct mirror" },
+        "nist_ai_rmf": { "references": ["MAP 1.1", "MAP 1.5", "MAP 5.1", "MANAGE 1.2", "MANAGE 1.3", "MANAGE 2.1"], "overlap": "FULL" },
+        "iso_42001": { "references": ["A.6.1", "A.6.2"], "overlap": "FULL" },
+        "apra_cps_230": { "references": ["§16", "§17", "§18", "§19"], "overlap": "FULL", "notes": "Critical operations + tolerance levels" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g3-data-protection",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 3",
+      "title": "Protect AI systems and implement data governance",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 10", "Article 15(5)"], "overlap": "FULL", "notes": "Data governance + cybersecurity" },
+        "nist_ai_rmf": { "references": ["MAP 2.1", "MAP 4.1", "MEASURE 2.7"], "overlap": "FULL" },
+        "iso_42001": { "references": ["A.7"], "overlap": "FULL" },
+        "apra_cps_234": { "references": ["§15", "§16", "§17", "§18", "§19", "§20", "§21", "§22", "§23"], "overlap": "FULL", "notes": "Direct AU prudential overlap for AI security" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g4-test-evaluate",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 4",
+      "title": "Test AI models and systems; evaluate performance; monitor in deployment",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 9(2)(c)", "Article 9(2)(d)", "Article 15"], "overlap": "FULL" },
+        "nist_ai_rmf": { "references": ["MEASURE 2.1", "MEASURE 2.5", "MEASURE 2.6", "MANAGE 4.1"], "overlap": "FULL" },
+        "iso_42001": { "references": ["A.6.2.5", "A.6.2.6"], "overlap": "FULL" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g5-human-oversight",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 5",
+      "title": "Enable meaningful human control or intervention",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 14"], "overlap": "FULL" },
+        "nist_ai_rmf": { "references": ["GOVERN 1.3", "MAP 3.5"], "overlap": "FULL" },
+        "iso_42001": { "references": ["A.9.2"], "overlap": "FULL" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g6-user-information",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 6",
+      "title": "Inform end-users about AI use, decisions, content",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 13", "Article 50"], "overlap": "FULL" },
+        "nist_ai_rmf": { "references": ["MAP 1.2", "GOVERN 4.2"], "overlap": "FULL" },
+        "iso_42001": { "references": ["A.8.2"], "overlap": "FULL" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g7-challenge-rights",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 7",
+      "title": "Process for impacted people to challenge use or outcomes",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 14(4)(d)", "Article 85", "Article 86"], "overlap": "FULL" },
+        "nist_ai_rmf": { "references": ["GOVERN 5.1", "GOVERN 5.2"], "overlap": "PARTIAL" },
+        "gdpr": { "references": ["Article 22"], "overlap": "PARTIAL", "notes": "Automated-decision-making protections overlap; AI-specific challenge mechanism extends GDPR" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g8-supply-chain-transparency",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 8",
+      "title": "Transparency across the AI supply chain",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 25"], "overlap": "FULL", "notes": "Responsibilities along the value chain" },
+        "nist_ai_rmf": { "references": ["GOVERN 6.1", "GOVERN 6.2"], "overlap": "FULL" },
+        "iso_42001": { "references": ["A.10", "A.10.3"], "overlap": "FULL" },
+        "ssdf": { "references": ["PS.3", "PW.4"], "overlap": "PARTIAL", "notes": "Supply-chain integrity + provenance overlap" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g9-records",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 9",
+      "title": "Keep and maintain records for third-party compliance assessment",
+      "mappings": {
+        "eu_ai_act": { "references": ["Article 12", "Article 19"], "overlap": "FULL", "notes": "Logging + retention" },
+        "nist_ai_rmf": { "references": ["GOVERN 1.6", "MEASURE 4.1"], "overlap": "FULL" },
+        "iso_42001": { "references": ["A.9", "A.4.6"], "overlap": "FULL" },
+        "apra_cps_230": { "references": ["§37", "§38", "§39", "§40", "§41", "§42", "§43", "§44"], "overlap": "PARTIAL", "notes": "Incident management + notification record obligations" }
+      }
+    },
+    {
+      "id": "au-ai-safety-g10-stakeholder-engagement",
+      "framework": "au_ai_safety",
+      "reference": "Guardrail 10",
+      "title": "Engage stakeholders; safety, diversity, inclusion, fairness",
+      "mappings": {
+        "eu_ai_act": { "references": ["Recital 27", "Article 95"], "overlap": "FULL", "notes": "Codes of conduct including fairness" },
+        "nist_ai_rmf": { "references": ["MAP 1.2", "MAP 3.2"], "overlap": "FULL" },
+        "oecd_ai": { "references": ["1.1 Inclusive growth", "1.2 Human-centred values"], "overlap": "FULL" }
+      }
+    },
+    {
+      "id": "ssdf-secure-build-provenance",
+      "framework": "ssdf",
+      "reference": "PS.3 + PW.4 + RV.1",
+      "title": "Secure software development with build provenance",
+      "mappings": {
+        "slsa": { "references": ["Build L2", "Build L3"], "overlap": "FULL", "notes": "SLSA Build levels operationalise SSDF" },
+        "eu_ai_act": { "references": ["Article 15(5)"], "overlap": "PARTIAL", "notes": "Cybersecurity for AI; SSDF general for any software" },
+        "iso_42001": { "references": ["A.6.2.5", "A.6.2.6"], "overlap": "PARTIAL" }
+      }
+    }
+  ]
+}

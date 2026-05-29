@@ -1,0 +1,67 @@
+{
+  "name": "@hellouchit/mcp-regulated-ai-compliance",
+  "version": "0.1.0",
+  "description": "MCP server exposing regulated-industry AI compliance knowledge (EU AI Act · APRA CPS 230/234 · NIST AI RMF · ISO 42001 · AU AI Safety Standard · SLSA · SSDF · OWASP LLM Top 10) as tools, resources, and prompts. Free + MIT. By Uchit Vyas.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-regulated-ai-compliance": "dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && cp -r src/data dist/data",
+    "dev": "tsc --watch & node --watch dist/index.js",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check src",
+    "format": "biome format --write src",
+    "sync-data": "node scripts/sync-data.js",
+    "release": "npm run build && npm test && npm publish --access public"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-compliance",
+    "eu-ai-act",
+    "apra",
+    "nist-ai-rmf",
+    "iso-42001",
+    "au-ai-safety",
+    "slsa",
+    "ssdf",
+    "owasp-llm",
+    "claude",
+    "claude-desktop",
+    "cursor",
+    "regulated-industries",
+    "compliance"
+  ],
+  "author": "Uchit Vyas <contact@hellouchit.com> (https://hellouchit.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uchit/mcp-regulated-ai-compliance.git"
+  },
+  "homepage": "https://hellouchit.com",
+  "bugs": {
+    "url": "https://github.com/uchit/mcp-regulated-ai-compliance/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "@types/node": "^20.16.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
