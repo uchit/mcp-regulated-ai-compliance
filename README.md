@@ -51,29 +51,49 @@ mcp-regulated-ai-compliance/
 
 ---
 
-## Build status
+## Status — v0.1.1 shipped 2026-05-29
+
+[![CI](https://github.com/uchit/mcp-regulated-ai-compliance/actions/workflows/ci.yml/badge.svg)](https://github.com/uchit/mcp-regulated-ai-compliance/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@hellouchit/mcp-regulated-ai-compliance.svg)](https://www.npmjs.com/package/@hellouchit/mcp-regulated-ai-compliance)
+[![npm downloads](https://img.shields.io/npm/dm/@hellouchit/mcp-regulated-ai-compliance.svg)](https://www.npmjs.com/package/@hellouchit/mcp-regulated-ai-compliance)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Provenance](https://img.shields.io/badge/npm-provenance%20signed-success)](https://search.sigstore.dev/?logIndex=1667445738)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-active-brightgreen)](https://registry.modelcontextprotocol.io/v0/servers?search=regulated-ai-compliance)
 
 | Phase | Status |
 |---|---|
 | **Phase 0 — Scope + skeleton** | ✅ done |
 | **Phase 1 — Working server + reference tool** | ✅ done |
 | **Phase 2 — 6 core tools** | ✅ done |
-| **Phase 3 — 4 resource providers (~40 URIs) + 5 prompts** | ✅ done |
-| **Phase 4 — `npm publish` + directory submissions** | ⏳ ready (run `npm publish --access public` after creating npm org) |
+| **Phase 3 — 4 resource providers (53 URIs) + 5 prompts** | ✅ done |
+| **Phase 4 — npm publish + directory submissions** | ✅ **done** |
+| **Phase 5 — v0.2 HTTP transport (for Smithery + hosted clients)** | 🔜 next |
 
-**v0.1.0 ships with:**
+### v0.1.1 ships with
 
 - **6 tools** — `lookup_control` · `get_anti_pattern` · `crosswalk` · `walk_playbook` · `classify_use_case` · `list_regulations`
-- **4 resource providers** — full dataset (+ by-regulation + by-category), 15 anti-patterns (bundled + per-slug), 4 playbooks, the 20-entry crosswalk matrix
+- **4 resource providers (53 URIs total)** — full dataset (+ by-regulation + by-category), 15 anti-patterns (bundled + per-slug), 4 playbook slots, the 20-entry crosswalk matrix
 - **5 prompts** — `eu-ai-act-classify` · `au-ai-safety-walkthrough` · `crosswalk-frameworks` · `playbook-week` · `anti-pattern-diagnostic`
 - **Embedded knowledge** — 56 controls × 28 regulations × 261 tools, 15 named anti-patterns, EU AI Act 12-week playbook, 20 cross-walks
-- **CI + tests** — GitHub Actions for `npm test` on every PR + automated `npm publish --provenance` on version tag
+- **CI + tests** — GitHub Actions on Node 22 + 24, 9/9 unit tests, automated `npm publish --provenance` on version tag (sigstore-anchored)
+
+### Where you can find it
+
+| Channel | Status |
+|---|---|
+| npm | ✅ [`@hellouchit/mcp-regulated-ai-compliance@0.1.1`](https://www.npmjs.com/package/@hellouchit/mcp-regulated-ai-compliance) |
+| Official MCP Registry | ✅ [`io.github.uchit/mcp-regulated-ai-compliance`](https://registry.modelcontextprotocol.io/v0/servers?search=regulated-ai-compliance) |
+| Glama | ⏳ verification in progress |
+| mcp.so | ⏳ awaiting review |
+| PulseMCP | ⏳ auto-pulls from Official Registry (~24h) |
+| awesome-mcp-servers (Security) | ⏳ [PR #7084](https://github.com/punkpeye/awesome-mcp-servers/pull/7084) |
+| Smithery | 🔜 v0.2 (needs HTTP transport) |
 
 See `scope/05-build-roadmap.md` for the v0.2+ roadmap.
 
 ---
 
-## Quick install (once published — currently in development)
+## Quick install
 
 For Claude Desktop:
 
@@ -90,6 +110,10 @@ For Claude Desktop:
 ```
 
 Then restart Claude Desktop → you'll see new tools available: `lookup_control`, `classify_use_case`, `get_anti_pattern`, etc.
+
+### Regulation slugs (use these exact values in tool arguments)
+
+`eu_ai_act` · `cps234` · `cps230` · `soci` · `ai_safety_au` · `privacy_au` · `e8` · `irap` · `dora` · `nis2` · `gdpr` · `circia` · `hipaa` · `fda_samd` · `cisa_ssa` · `ssdf` · `ai_rmf` · `sp80053` · `iso42001` · `iso27001` · `slsa` · `owasp_llm` · `atlas` · `bcbs239` · `pci` · `iec62443` · `iso13485` · `iec62304`
 
 ---
 
