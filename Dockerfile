@@ -37,5 +37,10 @@ COPY --chown=mcp:mcp package.json ./
 
 USER mcp
 
-# stdio transport — Glama pipes JSON-RPC in/out
-ENTRYPOINT ["node", "dist/index.js"]
+# Default to HTTP transport for container deployments (Smithery, hosted
+# clients). Override with `CMD ["dist/index.js"]` or set TRANSPORT=stdio
+# at runtime for stdio harnesses (Glama uses stdio).
+EXPOSE 3000
+ENV PORT=3000 HOST=0.0.0.0
+ENTRYPOINT ["node"]
+CMD ["dist/http.js"]

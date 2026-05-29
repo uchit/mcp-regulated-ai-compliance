@@ -200,15 +200,178 @@ export function findAntiPatterns(query: string): AntiPattern[] {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Playbooks (v0.1 stub; full parser in Phase 2)
+// Playbooks (v0.2 — full markdown parser)
 // ─────────────────────────────────────────────────────────────────────
+
+/**
+ * One markdown file per playbook slug; format conventions documented
+ * in scope/03-resources-spec.md and demonstrated by
+ * src/data/playbooks/eu-ai-act-12-weeks-playbook.md.
+ */
+const PLAYBOOK_FILES: Record<string, string> = {
+  "eu-ai-act-12-weeks": "eu-ai-act-12-weeks-playbook.md",
+  "cisa-attestation-90-days": "cisa-attestation-90-days-playbook.md",
+  "cloud-cost-aware-to-controlled": "cloud-cost-aware-to-controlled-playbook.md",
+  "vault-theatre-to-workload-identity": "vault-theatre-to-workload-identity-playbook.md",
+};
 
 let _playbooks: Map<string, Playbook> | null = null;
 
 export function getPlaybooks(): Map<string, Playbook> {
   if (_playbooks) return _playbooks;
-  // Phase 2: parse the 4 playbook markdown files in src/data/playbooks/
-  // into structured Playbook objects.
   _playbooks = new Map();
+  for (const [slug, file] of Object.entries(PLAYBOOK_FILES)) {
+    try {
+      const md = readFileSync(join(DATA_DIR, "playbooks", file), "utf-8");
+      _playbooks.set(slug, parsePlaybookMarkdown(slug, md));
+    } catch (err) {
+      // Missing file ≠ fatal — server boots with fewer playbooks rather
+      // than crashing. The walk_playbook tool surfaces a clear error.
+      console.error(`[retrieval] skipped playbook '${slug}': ${err instanceof Error ? err.message : err}`);
+    }
+  }
   return _playbooks;
+}
+
+/**
+ * Parse a playbook markdown file into a structured Playbook.
+ *
+ * Recognised structure (anchored to the eu-ai-act-12-weeks template):
+ *   # <Title>
+ *   > Source: <url>
+ *   **Audience** <text>  **Pre-req** <text>
+ *   **End state** <text>
+ *   **Re-run diagnostic at week 13** [<name>](<url>)
+ *   Phase N
+ *   Weeks N–N
+ *   ## <Phase title>
+ *   Week N
+ *   ### <Week title>
+ *   <body...>
+ *   **Gate N · <gate title>**
+ *   <gate body...>
+ *   **Avoid —** <antipattern blurb>   (zero or more)
+ */
+export function parsePlaybookMarkdown(slug: string, md: string): Playbook {
+  // ── Header block ───────────────────────────────────────────────────
+  const title = md.match(/^#\s+(.+)$/m)?.[1]?.trim() ?? slug;
+
+  const sourceUrl =
+    md.match(/^>\s*Source:\s*(\S+)/m)?.[1]?.trim() ??
+    `https://hellouchit.com/playbooks/${slug}.html`;
+
+  const audience =
+    md.match(/\*\*Audience\*\*\s+([^*]+?)(?=\*\*|$)/)?.[1]?.trim() ??
+    "Engineering + product + risk leadership";
+
+  const pre_requisites =
+    md.match(/\*\*Pre-req\*\*\s+([^*]+?)(?=\*\*|\n\n|$)/)?.[1]?.trim() ??
+    "Live system in production or pre-launch";
+
+  const end_state =
+    md.match(/\*\*End state\*\*\s+([\s\S]+?)(?=\*\*Re-run|\nPhase|\n##)/)?.[1]?.trim() ??
+    "See playbook body";
+
+  const diagMatch = md.match(
+    /\*\*Re-run diagnostic at week 13\*\*\s+\[([^\]]+)\]\(([^)]+)\)/
+  );
+  const diagnostic_to_rerun = {
+    name: diagMatch?.[1]?.trim() ?? "Readiness diagnostic",
+    url: normaliseUrl(diagMatch?.[2]?.trim() ?? "/tools/", sourceUrl),
+  };
+
+  // ── Week blocks ────────────────────────────────────────────────────
+  // Split on "Week N" anchors that start a line. Phase context is
+  // inferred from the most recent "## <phase title>" before the week.
+  const weeks: Playbook["weeks"] = [];
+  const phaseHeaders: { line: number; phase: string }[] = [];
+  const lines = md.split("\n");
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i] ?? "";
+    const phaseMatch = line.match(/^##\s+(.+)$/);
+    if (phaseMatch) phaseHeaders.push({ line: i, phase: phaseMatch[1]!.trim() });
+  }
+
+  const weekAnchorRe = /^Week\s+(\d{1,2})\s*$/;
+  const weekStarts: { lineIdx: number; weekNumber: number }[] = [];
+  lines.forEach((line, idx) => {
+    const m = line.match(weekAnchorRe);
+    if (m) weekStarts.push({ lineIdx: idx, weekNumber: Number(m[1]) });
+  });
+
+  for (let i = 0; i < weekStarts.length; i++) {
+    const start = weekStarts[i]!;
+    const end = weekStarts[i + 1]?.lineIdx ?? lines.length;
+    const block = lines.slice(start.lineIdx, end).join("\n");
+
+    const titleMatch = block.match(/^###\s+(.+)$/m);
+    const weekTitle = titleMatch?.[1]?.trim().replace(/\.$/, "") ?? `Week ${start.weekNumber}`;
+
+    const gateMatch = block.match(/\*\*Gate\s+\d+\s*·\s*([^*]+)\*\*/);
+    const gate = gateMatch ? `Gate ${start.weekNumber} · ${gateMatch[1]!.trim()}` : `Gate ${start.weekNumber}`;
+
+    const anti_patterns_to_avoid = Array.from(
+      block.matchAll(/\*\*Avoid\s+—\*\*\s+([^\n]+)/g),
+      (m) => m[1]!.trim()
+    );
+
+    // what_to_do = block stripped of the gate/avoid markers + ### header
+    const bodyLines = block
+      .split("\n")
+      .filter((l) => !weekAnchorRe.test(l))
+      .filter((l) => !/^###\s/.test(l))
+      .filter((l) => !/^\*\*Gate\s+\d+/.test(l))
+      .filter((l) => !/^\*\*Avoid\s+—/.test(l))
+      .join("\n")
+      .trim();
+
+    // Phase = most recent "## " header before this week
+    const phase =
+      [...phaseHeaders].reverse().find((p) => p.line < start.lineIdx)?.phase ?? "Phase";
+
+    weeks.push({
+      week_number: start.weekNumber,
+      phase,
+      title: weekTitle,
+      what_to_do: bodyLines,
+      gate,
+      anti_patterns_to_avoid,
+      source_url: `${sourceUrl}#week-${start.weekNumber}`,
+    });
+  }
+
+  return {
+    slug,
+    title,
+    audience,
+    pre_requisites,
+    end_state,
+    diagnostic_to_rerun,
+    weeks,
+    source_url: sourceUrl,
+  };
+}
+
+/** Resolve a relative URL (e.g. "/tools/x.html") against an absolute base. */
+function normaliseUrl(href: string, base: string): string {
+  // Strip markdown angle-bracket wrapping used in the source playbooks
+  // (e.g. `</tools/genai-readiness.html>`).
+  const clean = href.replace(/^<+|>+$/g, "");
+  if (/^https?:\/\//.test(clean)) return clean;
+  // Always resolve against the canonical site root, never the playbook
+  // URL (otherwise "/tools/x" gets mounted under the playbook path).
+  const root = (() => {
+    try {
+      const u = new URL(base);
+      return `${u.protocol}//${u.host}`;
+    } catch {
+      return "https://hellouchit.com";
+    }
+  })();
+  try {
+    return new URL(clean, root).toString();
+  } catch {
+    return `https://hellouchit.com${clean.startsWith("/") ? "" : "/"}${clean}`;
+  }
 }
