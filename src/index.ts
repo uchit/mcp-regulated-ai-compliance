@@ -3,55 +3,71 @@
  * mcp-regulated-ai-compliance — entry point
  *
  * MCP server exposing regulated-industry AI compliance knowledge as
- * tools, resources, and prompts. Uses stdio transport (v0.1) so the
- * install path is `npx -y @hellouchit/mcp-regulated-ai-compliance`.
+ * tools, resources, and prompts. Uses stdio transport so the install
+ * path is `npx -y @hellouchit/mcp-regulated-ai-compliance`.
  *
- * Built by Uchit Vyas (https://hellouchit.com). MIT.
+ * Built by Uchit Vyas (https://hellouchit.com). Apache 2.0.
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
   CallToolRequestSchema,
+  GetPromptRequestSchema,
+  ListPromptsRequestSchema,
+  ListResourcesRequestSchema,
   ListToolsRequestSchema,
+  ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-import {
-  lookupControlHandler,
-  lookupControlTool,
-} from "./tools/lookup-control.js";
+// Tools
+import { classifyUseCaseHandler, classifyUseCaseTool } from "./tools/classify-use-case.js";
+import { crosswalkHandler, crosswalkTool } from "./tools/crosswalk.js";
+import { getAntiPatternHandler, getAntiPatternTool } from "./tools/get-anti-pattern.js";
+import { listRegulationsHandler, listRegulationsTool } from "./tools/list-regulations.js";
+import { lookupControlHandler, lookupControlTool } from "./tools/lookup-control.js";
+import { walkPlaybookHandler, walkPlaybookTool } from "./tools/walk-playbook.js";
+
+// Resources
+import { antiPatternResources } from "./resources/anti-patterns.js";
+import { crosswalkResources } from "./resources/crosswalks.js";
+import { datasetResources } from "./resources/dataset.js";
+import { playbookResources } from "./resources/playbooks.js";
+
+// Prompts
+import { prompts, promptsByName } from "./prompts/index.js";
 
 // ─────────────────────────────────────────────────────────────────────
-// Server identity
+// Server
 // ─────────────────────────────────────────────────────────────────────
 
 const server = new Server(
-  {
-    name: "mcp-regulated-ai-compliance",
-    version: "0.1.0",
-  },
-  {
-    capabilities: {
-      tools: {},
-      // resources + prompts capabilities will be added in Phase 3
-    },
-  }
+  { name: "mcp-regulated-ai-compliance", version: "0.1.0" },
+  { capabilities: { tools: {}, resources: {}, prompts: {} } }
 );
 
 // ─────────────────────────────────────────────────────────────────────
-// Tool registry
+// Tools (6)
 // ─────────────────────────────────────────────────────────────────────
 
-const tools = [lookupControlTool];
+const tools = [
+  lookupControlTool,
+  getAntiPatternTool,
+  crosswalkTool,
+  walkPlaybookTool,
+  classifyUseCaseTool,
+  listRegulationsTool,
+];
 
 const toolHandlers: Record<string, (input: unknown) => Promise<unknown>> = {
   lookup_control: lookupControlHandler,
+  get_anti_pattern: getAntiPatternHandler,
+  crosswalk: crosswalkHandler,
+  walk_playbook: walkPlaybookHandler,
+  classify_use_case: classifyUseCaseHandler,
+  list_regulations: listRegulationsHandler,
 };
-
-// ─────────────────────────────────────────────────────────────────────
-// Protocol handlers
-// ─────────────────────────────────────────────────────────────────────
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: tools.map(t => ({
@@ -64,36 +80,61 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   const handler = toolHandlers[name];
-
   if (!handler) {
-    return {
-      isError: true,
-      content: [{ type: "text", text: `Unknown tool: ${name}` }],
-    };
+    return { isError: true, content: [{ type: "text", text: `Unknown tool: ${name}` }] };
   }
-
   try {
     const result = await handler(args);
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    return {
-      isError: true,
-      content: [
-        {
-          type: "text",
-          text: `Tool '${name}' failed: ${message}`,
-        },
-      ],
-    };
+    const msg = err instanceof Error ? err.message : String(err);
+    return { isError: true, content: [{ type: "text", text: `Tool '${name}' failed: ${msg}` }] };
   }
+});
+
+// ─────────────────────────────────────────────────────────────────────
+// Resources (4 providers)
+// ─────────────────────────────────────────────────────────────────────
+
+const resourceProviders = [
+  datasetResources,
+  antiPatternResources,
+  playbookResources,
+  crosswalkResources,
+];
+
+server.setRequestHandler(ListResourcesRequestSchema, async () => ({
+  resources: resourceProviders.flatMap(p => p.list()),
+}));
+
+server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+  const uri = request.params.uri;
+  for (const provider of resourceProviders) {
+    const result = provider.read(uri);
+    if (result) {
+      return { contents: [result] };
+    }
+  }
+  throw new Error(`Resource not found: ${uri}`);
+});
+
+// ─────────────────────────────────────────────────────────────────────
+// Prompts (5)
+// ─────────────────────────────────────────────────────────────────────
+
+server.setRequestHandler(ListPromptsRequestSchema, async () => ({
+  prompts: prompts.map(p => ({
+    name: p.name,
+    description: p.description,
+    arguments: p.arguments,
+  })),
+}));
+
+server.setRequestHandler(GetPromptRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+  const tpl = promptsByName.get(name);
+  if (!tpl) throw new Error(`Unknown prompt: ${name}`);
+  return tpl.build((args as Record<string, string>) ?? {});
 });
 
 // ─────────────────────────────────────────────────────────────────────
@@ -103,8 +144,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  // stdio: stderr is fine for logs; stdout is reserved for MCP protocol
-  console.error("[mcp-regulated-ai-compliance] v0.1.0 ready on stdio");
+  const resourceCount = resourceProviders.flatMap(p => p.list()).length;
+  console.error(
+    `[mcp-regulated-ai-compliance] v0.1.0 ready on stdio · ${tools.length} tools · ${resourceCount} resources · ${prompts.length} prompts`
+  );
 }
 
 main().catch((err: unknown) => {

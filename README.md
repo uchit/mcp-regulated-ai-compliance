@@ -44,7 +44,7 @@ mcp-regulated-ai-compliance/
 ├── tests/
 ├── package.json                       ← npm config (working)
 ├── tsconfig.json                      ← TypeScript config
-├── LICENSE                            ← MIT
+├── LICENSE                            ← Apache 2.0 (code) + CC BY 4.0 (dataset)
 ├── .gitignore
 └── .github/workflows/                 ← CI: build + publish to npm
 ```
@@ -55,13 +55,21 @@ mcp-regulated-ai-compliance/
 
 | Phase | Status |
 |---|---|
-| **Phase 0 — Scope + skeleton** | ✅ done (you're looking at it) |
-| **Phase 1 — Working server with 1 tool** | ✅ `lookup_control` implemented as reference |
-| **Phase 2 — Core tools (v0.1)** | ⏳ in progress |
-| **Phase 3 — Resources + prompts** | ⏳ planned |
-| **Phase 4 — Publishing + directory listing** | ⏳ planned |
+| **Phase 0 — Scope + skeleton** | ✅ done |
+| **Phase 1 — Working server + reference tool** | ✅ done |
+| **Phase 2 — 6 core tools** | ✅ done |
+| **Phase 3 — 4 resource providers (~40 URIs) + 5 prompts** | ✅ done |
+| **Phase 4 — `npm publish` + directory submissions** | ⏳ ready (run `npm publish --access public` after creating npm org) |
 
-Read `scope/05-build-roadmap.md` for what to build in what order.
+**v0.1.0 ships with:**
+
+- **6 tools** — `lookup_control` · `get_anti_pattern` · `crosswalk` · `walk_playbook` · `classify_use_case` · `list_regulations`
+- **4 resource providers** — full dataset (+ by-regulation + by-category), 15 anti-patterns (bundled + per-slug), 4 playbooks, the 20-entry crosswalk matrix
+- **5 prompts** — `eu-ai-act-classify` · `au-ai-safety-walkthrough` · `crosswalk-frameworks` · `playbook-week` · `anti-pattern-diagnostic`
+- **Embedded knowledge** — 56 controls × 28 regulations × 261 tools, 15 named anti-patterns, EU AI Act 12-week playbook, 20 cross-walks
+- **CI + tests** — GitHub Actions for `npm test` on every PR + automated `npm publish --provenance` on version tag
+
+See `scope/05-build-roadmap.md` for the v0.2+ roadmap.
 
 ---
 
@@ -100,6 +108,20 @@ See `scope/01-architecture.md` for the dev-loop details.
 
 ## License
 
-MIT. Free to fork, embed, modify. Attribution to hellouchit.com appreciated but not required.
+**Code:** Apache 2.0. Free for individual + commercial use. Patent grant included.
+**Dataset** (regulations × controls × tooling, anti-patterns, playbooks, crosswalks): CC BY 4.0 — attribution to hellouchit.com required.
 
-If you ship a commercial product on top of this, please consider sponsoring at [github.com/sponsors/uchit](https://github.com/sponsors/uchit).
+If you ship a commercial product on top of this, please consider [sponsoring on GitHub](https://github.com/sponsors/uchit).
+
+---
+
+## Looking for a hosted / managed version?
+
+For organisations needing a multi-tenant hosted instance with:
+
+- SSO + audit log + admin console
+- White-labelled dataset extensions (your own controls + crosswalks added alongside the canonical ones)
+- Customer-specific playbook variants
+- SLA + dedicated support
+
+→ **The managed/SaaS edition is on the roadmap.** Sign up at [hellouchit.com/letters](https://hellouchit.com/letters) to be notified when it ships, or email **contact@hellouchit.com** to be early-access.
