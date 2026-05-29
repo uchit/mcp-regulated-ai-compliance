@@ -1,7 +1,8 @@
 {
   "name": "@hellouchit/mcp-regulated-ai-compliance",
-  "version": "0.1.0",
-  "description": "MCP server exposing regulated-industry AI compliance knowledge (EU AI Act · APRA CPS 230/234 · NIST AI RMF · ISO 42001 · AU AI Safety Standard · SLSA · SSDF · OWASP LLM Top 10) as tools, resources, and prompts. Free + MIT. By Uchit Vyas.",
+  "version": "0.1.1",
+  "mcpName": "io.github.uchit/mcp-regulated-ai-compliance",
+  "description": "MCP server exposing regulated-industry AI compliance knowledge (EU AI Act · APRA CPS 230/234 · NIST AI RMF · ISO 42001 · AU AI Safety Standard · SLSA · SSDF · OWASP LLM Top 10) as tools, resources, and prompts. Apache 2.0 (code) + CC BY 4.0 (dataset). By Uchit Vyas.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {

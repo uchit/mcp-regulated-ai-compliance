@@ -43,7 +43,7 @@ import { prompts, promptsByName } from "./prompts/index.js";
 // ─────────────────────────────────────────────────────────────────────
 
 const server = new Server(
-  { name: "mcp-regulated-ai-compliance", version: "0.1.0" },
+  { name: "mcp-regulated-ai-compliance", version: "0.1.1" },
   { capabilities: { tools: {}, resources: {}, prompts: {} } }
 );
 
@@ -146,7 +146,7 @@ async function main() {
   await server.connect(transport);
   const resourceCount = resourceProviders.flatMap(p => p.list()).length;
   console.error(
-    `[mcp-regulated-ai-compliance] v0.1.0 ready on stdio · ${tools.length} tools · ${resourceCount} resources · ${prompts.length} prompts`
+    `[mcp-regulated-ai-compliance] v0.1.1 ready on stdio · ${tools.length} tools · ${resourceCount} resources · ${prompts.length} prompts`
   );
 }
 
