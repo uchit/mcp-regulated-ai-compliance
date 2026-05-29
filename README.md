@@ -51,7 +51,9 @@ mcp-regulated-ai-compliance/
 
 ---
 
-## Status — v0.2.0 shipped 2026-05-29
+## Status — v0.2.1 shipped 2026-05-29
+
+> v0.2.1 = data-source abstraction so the same codebase runs on Node (stdio, node:http) AND on Cloudflare Workers / Deno Deploy / Vercel Edge. See `worker/` for the Cloudflare scaffold.
 
 [![CI](https://github.com/uchit/mcp-regulated-ai-compliance/actions/workflows/ci.yml/badge.svg)](https://github.com/uchit/mcp-regulated-ai-compliance/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@hellouchit/mcp-regulated-ai-compliance.svg)](https://www.npmjs.com/package/@hellouchit/mcp-regulated-ai-compliance)

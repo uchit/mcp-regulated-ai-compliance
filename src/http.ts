@@ -19,6 +19,8 @@
 import { createServer as createHttpServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { randomUUID } from "node:crypto";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { setDataSource } from "./lib/data-source.js";
+import { nodeDataSource } from "./lib/node-data-source.js";
 import { SERVER_NAME, SERVER_VERSION, buildServer } from "./server.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
@@ -27,6 +29,7 @@ const MCP_PATH = process.env.MCP_PATH ?? "/mcp";
 const STATEFUL = process.env.MCP_STATEFUL === "true";
 
 async function main() {
+  setDataSource(nodeDataSource);
   const { server, summary } = buildServer();
 
   const transport = new StreamableHTTPServerTransport(

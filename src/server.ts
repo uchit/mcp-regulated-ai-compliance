@@ -36,7 +36,7 @@ import { playbookResources } from "./resources/playbooks.js";
 import { prompts, promptsByName } from "./prompts/index.js";
 
 export const SERVER_NAME = "mcp-regulated-ai-compliance";
-export const SERVER_VERSION = "0.2.0";
+export const SERVER_VERSION = "0.2.1";
 
 export interface ServerBuildSummary {
   toolCount: number;

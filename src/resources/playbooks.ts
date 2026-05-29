@@ -3,17 +3,16 @@
  *
  * URIs:
  *   hellouchit://playbooks/{slug}  — full playbook as Markdown
+ *
+ * Backed by the platform-agnostic DataSource so the same code runs on
+ * Node (where playbooks come from disk) and Workers / Edge (where they
+ * come from inlined bundle-time imports).
  */
 
-import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const PLAYBOOK_DIR = join(__dirname, "..", "data", "playbooks");
+import { getDataSource } from "../lib/data-source.js";
 
 const PLAYBOOK_META: Record<string, { name: string; description: string }> = {
-  "eu-ai-act-12-weeks-playbook": {
+  "eu-ai-act-12-weeks": {
     name: "EU AI Act high-risk readiness in 12 weeks",
     description: "Week-by-week playbook for taking a high-risk AI use-case from Piloting to EU AI Act Articles 9-15 ready by 2 Aug 2026. Three phases, twelve named gates.",
   },
@@ -33,31 +32,25 @@ const PLAYBOOK_META: Record<string, { name: string; description: string }> = {
 
 export const playbookResources = {
   list() {
-    try {
-      const files = readdirSync(PLAYBOOK_DIR).filter(f => f.endsWith(".md"));
-      return files.map(f => {
-        const slug = f.replace(/\.md$/, "");
-        const meta = PLAYBOOK_META[slug] ?? { name: slug, description: "Playbook" };
-        return {
-          uri: `hellouchit://playbooks/${slug}`,
-          name: meta.name,
-          description: meta.description,
-          mimeType: "text/markdown",
-        };
-      });
-    } catch {
-      return [];
-    }
+    const playbooks = getDataSource().playbooks();
+    return Object.keys(playbooks).map((slug) => {
+      const meta = PLAYBOOK_META[slug] ?? { name: slug, description: "Playbook" };
+      return {
+        uri: `hellouchit://playbooks/${slug}`,
+        name: meta.name,
+        description: meta.description,
+        mimeType: "text/markdown",
+      };
+    });
   },
 
   read(uri: string) {
     const m = uri.match(/^hellouchit:\/\/playbooks\/(.+)$/);
     if (!m) return null;
-    try {
-      const text = readFileSync(join(PLAYBOOK_DIR, `${m[1]}.md`), "utf-8");
-      return { uri, mimeType: "text/markdown", text };
-    } catch {
-      return null;
-    }
+    const slug = m[1] ?? "";
+    const playbooks = getDataSource().playbooks();
+    const text = playbooks[slug];
+    if (!text) return null;
+    return { uri, mimeType: "text/markdown", text };
   },
 };

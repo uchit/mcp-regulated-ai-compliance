@@ -9,17 +9,13 @@
  * carries over to Z?"
  */
 
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { z } from "zod";
+import { getDataSource } from "../lib/data-source.js";
 import type { CrosswalkEntry } from "../lib/types.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = join(__dirname, "..", "data");
-
 // ─────────────────────────────────────────────────────────────────────
-// Load crosswalk data once at startup
+// Load crosswalk data once at startup (via injected DataSource so the
+// same code runs on Node + Cloudflare Workers + Deno Deploy + etc).
 // ─────────────────────────────────────────────────────────────────────
 
 interface CrosswalkData {
@@ -33,8 +29,7 @@ let _crosswalks: CrosswalkData | null = null;
 
 function getCrosswalks(): CrosswalkData {
   if (_crosswalks) return _crosswalks;
-  const raw = readFileSync(join(DATA_DIR, "crosswalks.json"), "utf-8");
-  _crosswalks = JSON.parse(raw) as CrosswalkData;
+  _crosswalks = JSON.parse(getDataSource().crosswalks()) as CrosswalkData;
   return _crosswalks;
 }
 

@@ -1,0 +1,5 @@
+node_modules
+src/embedded.ts
+.wrangler
+.dev.vars
+*.log

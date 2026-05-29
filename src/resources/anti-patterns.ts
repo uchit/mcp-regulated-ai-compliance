@@ -6,13 +6,8 @@
  *   hellouchit://anti-patterns/{slug}    — single anti-pattern as Markdown
  */
 
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { getDataSource } from "../lib/data-source.js";
 import { getAntiPatterns } from "../lib/retrieval.js";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = join(__dirname, "..", "data");
 
 export const antiPatternResources = {
   list() {
@@ -40,7 +35,7 @@ export const antiPatternResources = {
       return {
         uri,
         mimeType: "text/markdown",
-        text: readFileSync(join(DATA_DIR, "anti-patterns.md"), "utf-8"),
+        text: getDataSource().antiPatterns(),
       };
     }
     const m = uri.match(/^hellouchit:\/\/anti-patterns\/(.+)$/);

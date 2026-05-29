@@ -5,12 +5,7 @@
  *   hellouchit://crosswalks/full  — full crosswalk JSON (20+ entries)
  */
 
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = join(__dirname, "..", "data");
+import { getDataSource } from "../lib/data-source.js";
 
 export const crosswalkResources = {
   list() {
@@ -29,7 +24,7 @@ export const crosswalkResources = {
       return {
         uri,
         mimeType: "application/json",
-        text: readFileSync(join(DATA_DIR, "crosswalks.json"), "utf-8"),
+        text: getDataSource().crosswalks(),
       };
     }
     return null;

@@ -1,0 +1,39 @@
+#:schema node_modules/wrangler/config-schema.json
+#
+# Cloudflare Worker deployment for mcp-regulated-ai-compliance.
+#
+# Free tier handles 100K req/day; this server is read-only + pure-data
+# so cold-start is < 50ms after first request and CPU per request
+# is < 5ms typical. Expected cost at v0.2 traffic: $0/mo.
+#
+# Deploy:
+#   npm install
+#   npm run build           # generates src/embedded.ts from ../src/data/*
+#   npx wrangler deploy
+#
+# Custom domain (after first deploy):
+#   1. Cloudflare dashboard → mcp-regulated-ai-compliance worker
+#      → Settings → Domains & Routes → Add Custom Domain
+#   2. Enter: mcp.hellouchit.com  (or whatever subdomain you prefer)
+#   3. Cloudflare provisions the cert automatically
+#   4. Smithery / ChatGPT MCP directory get https://mcp.hellouchit.com/mcp
+
+name = "mcp-regulated-ai-compliance"
+main = "src/worker.ts"
+compatibility_date = "2026-05-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = ""                     # set via `npx wrangler login` or fill in
+
+# Stateful (per-session UUIDs) vs stateless (every request standalone).
+# Stateless is correct for this server because all tools are pure
+# functions over an immutable dataset.
+[vars]
+MCP_STATEFUL = "false"
+
+# Optional: Workers Logpush to your own R2 bucket for analytics.
+# Uncomment and configure if you want to track which tools get called
+# most often from which clients.
+#
+# [observability]
+# enabled = true
+# head_sampling_rate = 1

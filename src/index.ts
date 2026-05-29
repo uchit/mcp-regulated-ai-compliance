@@ -8,9 +8,12 @@
  */
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { setDataSource } from "./lib/data-source.js";
+import { nodeDataSource } from "./lib/node-data-source.js";
 import { SERVER_NAME, SERVER_VERSION, buildServer } from "./server.js";
 
 async function main() {
+  setDataSource(nodeDataSource);
   const { server, summary } = buildServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);

@@ -7,9 +7,6 @@
  * directly.
  */
 
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import {
   type AntiPattern,
   type Dataset,
@@ -18,9 +15,7 @@ import {
   type RegulationSlug,
   type Sector,
 } from "./types.js";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = join(__dirname, "..", "data");
+import { getDataSource } from "./data-source.js";
 
 // ─────────────────────────────────────────────────────────────────────
 // Dataset (regulation × control × tooling)
@@ -30,8 +25,7 @@ let _dataset: Dataset | null = null;
 
 export function getDataset(): Dataset {
   if (_dataset) return _dataset;
-  const raw = readFileSync(join(DATA_DIR, "dataset.json"), "utf-8");
-  _dataset = JSON.parse(raw) as Dataset;
+  _dataset = JSON.parse(getDataSource().dataset()) as Dataset;
   return _dataset;
 }
 
@@ -97,9 +91,7 @@ let _antiPatterns: Map<string, AntiPattern> | null = null;
  */
 export function getAntiPatterns(): Map<string, AntiPattern> {
   if (_antiPatterns) return _antiPatterns;
-
-  const md = readFileSync(join(DATA_DIR, "anti-patterns.md"), "utf-8");
-  _antiPatterns = parseAntiPatternsMarkdown(md);
+  _antiPatterns = parseAntiPatternsMarkdown(getDataSource().antiPatterns());
   return _antiPatterns;
 }
 
@@ -203,31 +195,22 @@ export function findAntiPatterns(query: string): AntiPattern[] {
 // Playbooks (v0.2 — full markdown parser)
 // ─────────────────────────────────────────────────────────────────────
 
-/**
- * One markdown file per playbook slug; format conventions documented
- * in scope/03-resources-spec.md and demonstrated by
- * src/data/playbooks/eu-ai-act-12-weeks-playbook.md.
- */
-const PLAYBOOK_FILES: Record<string, string> = {
-  "eu-ai-act-12-weeks": "eu-ai-act-12-weeks-playbook.md",
-  "cisa-attestation-90-days": "cisa-attestation-90-days-playbook.md",
-  "cloud-cost-aware-to-controlled": "cloud-cost-aware-to-controlled-playbook.md",
-  "vault-theatre-to-workload-identity": "vault-theatre-to-workload-identity-playbook.md",
-};
-
 let _playbooks: Map<string, Playbook> | null = null;
 
 export function getPlaybooks(): Map<string, Playbook> {
   if (_playbooks) return _playbooks;
   _playbooks = new Map();
-  for (const [slug, file] of Object.entries(PLAYBOOK_FILES)) {
+  const raw = getDataSource().playbooks();
+  for (const [slug, md] of Object.entries(raw)) {
     try {
-      const md = readFileSync(join(DATA_DIR, "playbooks", file), "utf-8");
       _playbooks.set(slug, parsePlaybookMarkdown(slug, md));
     } catch (err) {
-      // Missing file ≠ fatal — server boots with fewer playbooks rather
-      // than crashing. The walk_playbook tool surfaces a clear error.
-      console.error(`[retrieval] skipped playbook '${slug}': ${err instanceof Error ? err.message : err}`);
+      // Malformed markdown ≠ fatal — server boots with fewer playbooks
+      // rather than crashing. The walk_playbook tool surfaces a clear
+      // error when the slug isn't in the map.
+      console.error(
+        `[retrieval] skipped playbook '${slug}': ${err instanceof Error ? err.message : err}`
+      );
     }
   }
   return _playbooks;
