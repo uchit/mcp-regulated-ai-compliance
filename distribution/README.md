@@ -1,26 +1,46 @@
-# Distribution sprint — week 1
+# Distribution sprint — v0.2.1
 
-Execution order after `v0.1.0` is live on npm.
+Updated 2026-05-30 — server is now fully shipped on all canonical surfaces. Remaining work is pure announcement.
 
-| Day | Action | Time | File |
-|---|---|---|---|
-| **Day 0** | Dogfood in own Claude Desktop (already wired) | done | (config edited live) |
-| **Day 1** | Submit PR to `modelcontextprotocol/servers` | 15 min | `01-mcp-servers-pr.md` |
-| **Day 1** | Submit to mcp.so + pulsemcp.com + smithery.ai | 15 min | `02-mcp-directories.md` |
-| **Day 2** | LinkedIn announcement (Tue/Wed 7:30am AEST) | 10 min + comment engagement | `03-linkedin-post.md` |
-| **Day 3** | Show HN (Tue-Thu 8-10am PT = Wed-Fri 1-3am AEST) | 10 min + 90 min comment window | `04-show-hn.md` |
-| **Day 5** | Substack: "How I'd ground a coding assistant in EU AI Act" | 90 min write + post | (draft next sprint) |
-| **Day 7** | Audit: GitHub stars, npm weekly downloads, directory approvals | 30 min | (use `npm view` + GitHub Insights) |
+## Shipped (no further action needed)
 
-## Success metrics for week 1
+| Channel | Status |
+|---|---|
+| npm `@hellouchit/mcp-regulated-ai-compliance@0.2.1` | ✅ Live with provenance |
+| Official MCP Registry `io.github.uchit/mcp-regulated-ai-compliance@0.2.1` | ✅ isLatest |
+| Glama `glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance` | ✅ Verified |
+| Smithery `smithery.ai/server/@uchit86/regulated-ai-compliance` | ✅ Verified |
+| **Hosted endpoint** `https://mcp.hellouchit.com/mcp` | ✅ Cloudflare Worker, cert auto-provisioned |
+| Claude Desktop local install (via npx) | ✅ Tested |
 
-| Metric | Target | Stretch |
+## Pending (out of our hands)
+
+| Channel | Status |
+|---|---|
+| mcp.so | ⏳ Awaiting review (typically <24h) |
+| PulseMCP | ⏳ Daily auto-pull from Official Registry |
+| awesome-mcp-servers PR #7084 | ⏳ Awaiting punkpeye merge |
+| ChatGPT MCP directory | 🔜 When their submission opens |
+
+## Announcement window (you do, when ready)
+
+| Action | Best window | File |
 |---|---|---|
-| GitHub stars | 25 | 100 |
-| npm weekly downloads | 50 | 200 |
-| Directory listings live | 3 of 4 | 4 of 4 |
-| LinkedIn impressions | 8,000 | 25,000 |
-| Inbound DMs (qualified) | 5 | 15 |
-| hellouchit.com outbound clicks (from source_url in tool responses) | 20 | 100 |
+| LinkedIn post | Tue 2026-06-02 OR Wed 2026-06-03, 7:30am AEST | `03-linkedin-post.md` |
+| X / Twitter cross-post | 5 min after LinkedIn lands | (in `03-linkedin-post.md`) |
+| Show HN | Wed 2026-06-03 to Fri 2026-06-05, 1-3am AEST | `04-show-hn.md` |
+| Substack: "How I'd ground a coding assistant in EU AI Act" | Day +5 | (next sprint draft) |
 
-Track the last metric in GA4 → Reports → Engagement → Events → `outbound_click` filtered by source = `mcp-server`.
+## Success metrics — 7-day window after announcement
+
+| Metric | Source | Target | Stretch |
+|---|---|---|---|
+| GitHub stars | Repo Insights → Traffic | +30 | +100 |
+| npm weekly downloads | `npm view @hellouchit/mcp-regulated-ai-compliance` | +50 | +200 |
+| Smithery installs | Smithery dashboard | +10 | +50 |
+| **Hosted endpoint hits** | Cloudflare Worker analytics | +500 | +5000 |
+| LinkedIn post impressions | LinkedIn analytics | 8K | 25K |
+| Inbound qualified DMs | LinkedIn DMs / GitHub Issues | 5 | 15 |
+| hellouchit.com outbound clicks (source_url) | GA4 → outbound_click | +50 | +200 |
+
+The last metric is the actual ROI of the MCP server — every tool response embeds a `source_url` back to your dataset, anti-patterns, or playbooks. Each click = an AI agent in someone's IDE that footnoted your work.
