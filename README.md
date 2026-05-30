@@ -62,6 +62,7 @@ mcp-regulated-ai-compliance/
 [![Provenance](https://img.shields.io/badge/npm-provenance%20signed-success)](https://search.sigstore.dev/?logIndex=1667445738)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-active-brightgreen)](https://registry.modelcontextprotocol.io/v0/servers?search=regulated-ai-compliance)
 [![Glama MCP score](https://glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance/badges/score.svg)](https://glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance)
+[![smithery badge](https://smithery.ai/badge/@uchit86/regulated-ai-compliance)](https://smithery.ai/server/@uchit86/regulated-ai-compliance)
 
 | Phase | Status |
 |---|---|
@@ -97,7 +98,7 @@ mcp-regulated-ai-compliance/
 | PulseMCP | ⏳ auto-pulls from Official Registry (~24h) |
 | awesome-mcp-servers (Security) | ⏳ [PR #7084](https://github.com/punkpeye/awesome-mcp-servers/pull/7084) |
 | **Hosted endpoint** | ✅ **[https://mcp.hellouchit.com/mcp](https://mcp.hellouchit.com/mcp)** (Cloudflare Worker · stateless) |
-| Smithery | 🔜 ready to submit — paste `https://mcp.hellouchit.com/mcp` as hosted URL |
+| Smithery | ✅ [smithery.ai/server/@uchit86/regulated-ai-compliance](https://smithery.ai/server/@uchit86/regulated-ai-compliance) |
 
 See `scope/05-build-roadmap.md` for the v0.2+ roadmap.
 
