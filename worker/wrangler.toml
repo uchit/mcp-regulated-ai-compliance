@@ -22,7 +22,14 @@ name = "mcp-regulated-ai-compliance"
 main = "src/worker.ts"
 compatibility_date = "2026-05-01"
 compatibility_flags = ["nodejs_compat"]
-account_id = ""                     # set via `npx wrangler login` or fill in
+account_id = "62411d8a2b3cc864b25da95988e90d25"
+
+# Custom domain — Cloudflare auto-provisions the cert on first deploy.
+# Requires the zone (hellouchit.com) to be on the same Cloudflare account
+# as this worker. Cert provisions in ~30s; DNS record is auto-created.
+routes = [
+  { pattern = "mcp.hellouchit.com", custom_domain = true },
+]
 
 # Stateful (per-session UUIDs) vs stateless (every request standalone).
 # Stateless is correct for this server because all tools are pure

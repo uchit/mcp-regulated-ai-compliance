@@ -96,7 +96,8 @@ mcp-regulated-ai-compliance/
 | mcp.so | ⏳ awaiting review |
 | PulseMCP | ⏳ auto-pulls from Official Registry (~24h) |
 | awesome-mcp-servers (Security) | ⏳ [PR #7084](https://github.com/punkpeye/awesome-mcp-servers/pull/7084) |
-| Smithery | 🔜 ready to submit (HTTP transport now live; deploy hosted endpoint) |
+| **Hosted endpoint** | ✅ **[https://mcp.hellouchit.com/mcp](https://mcp.hellouchit.com/mcp)** (Cloudflare Worker · stateless) |
+| Smithery | 🔜 ready to submit — paste `https://mcp.hellouchit.com/mcp` as hosted URL |
 
 See `scope/05-build-roadmap.md` for the v0.2+ roadmap.
 

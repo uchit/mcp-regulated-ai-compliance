@@ -27,7 +27,9 @@ interface Env {
 }
 
 // One-time global init — modules are evaluated once per isolate, so this
-// runs once per cold start and stays warm across requests.
+// runs once per cold start and stays warm across requests. The DataSource
+// shim points at the embedded constants; the buildServer-ready capability
+// summary is computed once and cached for the /health response.
 setDataSource({
   dataset: () => DATASET_JSON,
   antiPatterns: () => ANTI_PATTERNS_MD,
@@ -35,19 +37,7 @@ setDataSource({
   playbooks: () => PLAYBOOKS,
 });
 
-const { server, summary } = buildServer();
-
-let _transport: WebStandardStreamableHTTPServerTransport | null = null;
-async function getTransport(stateful: boolean): Promise<WebStandardStreamableHTTPServerTransport> {
-  if (_transport) return _transport;
-  _transport = new WebStandardStreamableHTTPServerTransport(
-    stateful
-      ? { sessionIdGenerator: () => crypto.randomUUID() }
-      : { sessionIdGenerator: undefined }
-  );
-  await server.connect(_transport);
-  return _transport;
-}
+const _capabilitySummary = buildServer().summary;
 
 export default {
   async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
@@ -65,9 +55,9 @@ export default {
           transport: "streamable-http",
           mode: stateful ? "stateful" : "stateless",
           endpoint: "/mcp",
-          tools: summary.toolCount,
-          resources: summary.resourceCount,
-          prompts: summary.promptCount,
+          tools: _capabilitySummary.toolCount,
+          resources: _capabilitySummary.resourceCount,
+          prompts: _capabilitySummary.promptCount,
           docs: "https://github.com/uchit/mcp-regulated-ai-compliance",
           author: "https://hellouchit.com",
         },
@@ -75,10 +65,22 @@ export default {
       );
     }
 
-    // MCP endpoint — POST for JSON-RPC, GET for SSE long-poll
+    // MCP endpoint — POST for JSON-RPC, GET for SSE long-poll.
+    //
+    // Per the SDK contract, a stateless transport (sessionIdGenerator
+    // undefined) cannot be reused across requests — each request gets
+    // a fresh server + transport. buildServer is pure handler-registration
+    // (~ a few µs); the dataset is parsed once on first call thanks to
+    // module-level caching in retrieval.ts.
     if (url.pathname === "/mcp") {
       try {
-        const transport = await getTransport(stateful);
+        const { server } = buildServer();
+        const transport = new WebStandardStreamableHTTPServerTransport(
+          stateful
+            ? { sessionIdGenerator: () => crypto.randomUUID() }
+            : { sessionIdGenerator: undefined }
+        );
+        await server.connect(transport);
         return await transport.handleRequest(request);
       } catch (err) {
         return Response.json(
