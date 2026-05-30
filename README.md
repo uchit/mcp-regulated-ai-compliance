@@ -92,7 +92,7 @@ mcp-regulated-ai-compliance/
 | Channel | Status |
 |---|---|
 | npm | ✅ [`@hellouchit/mcp-regulated-ai-compliance@0.2.0`](https://www.npmjs.com/package/@hellouchit/mcp-regulated-ai-compliance) |
-| Official MCP Registry | ✅ [`io.github.uchit/mcp-regulated-ai-compliance`](https://registry.modelcontextprotocol.io/v0/servers?search=regulated-ai-compliance) |
+| Official MCP Registry | ✅ [`io.github.uchit/mcp-regulated-ai-compliance@0.2.1`](https://registry.modelcontextprotocol.io/v0/servers?search=regulated-ai-compliance) (latest) |
 | Glama | ✅ [verified](https://glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance) |
 | mcp.so | ⏳ awaiting review |
 | PulseMCP | ⏳ auto-pulls from Official Registry (~24h) |
