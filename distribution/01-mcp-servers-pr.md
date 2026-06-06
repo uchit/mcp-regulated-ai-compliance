@@ -55,5 +55,5 @@ Regulated-industry AI work (banking, super, insurance, health) needs grounded ci
 
 ### Author
 
-Uchit Vyas — FDE for Technology Transformation & AI at Accenture ANZ. Author of 5 books on cloud/security architecture, US patent holder, Top 50 DevSecOps globally.
+Uchit Vyas — Author of 5 books on cloud/security architecture, US patent holder, Top 50 DevSecOps globally.
 ```

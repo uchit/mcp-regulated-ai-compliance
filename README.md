@@ -2,7 +2,7 @@
 
 > A **Model Context Protocol** server exposing the regulated-industry AI compliance knowledge from [hellouchit.com](https://hellouchit.com) as tools, resources, and prompts callable from any MCP-compatible AI client — Claude Desktop, Cursor, Zed, Windsurf, OpenAI ChatGPT, Continue, Cline, and ~40 other clients.
 >
-> Free + open-source (Apache 2.0, dataset CC BY 4.0). Built by Uchit Vyas — FDE for Technology Transformation & AI at Accenture ANZ.
+> Free + open-source (Apache 2.0, dataset CC BY 4.0). Built by Uchit Vyas.
 
 ---
 
