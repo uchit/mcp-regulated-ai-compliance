@@ -70,18 +70,18 @@ HN ranks by comment velocity in the first 60 min. Be ready to:
 1. **Be at your computer** for the 90 min after posting
 2. **Reply to every comment within 10 min**, especially:
    - "Why not just RAG?" → explain that RAG returns prose; tools return *structured callable knowledge* the model uses for branching logic. Show a `crosswalk` example: input "Article 9", output structured JSON with FULL/PARTIAL/NEW classifications across 5 frameworks. A RAG retriever can't make those branching decisions cleanly.
-   - "Is the dataset proprietary?" → CC BY 4.0, raw JSON in `src/data/dataset.json`, free to fork. The maintained-by-me curation is what differentiates from any LLM trying to scrape primary sources.
+   - "Is the dataset proprietary?" → CC BY 4.0, raw JSON in `src/data/dataset.json`, free to fork. It's hand-curated from primary sources, which is the part that's hard to reproduce by scraping.
    - "How did you handle CF Workers + the MCP SDK?" → DataSource abstraction in src/lib/data-source.ts; embed-data script bundles the 161KB knowledge into the worker; the SDK has a WebStandardStreamableHTTPServerTransport variant that returns a Response from a Request. Stateless mode means per-request transport+server (cheap, ~µs of registration).
    - "What about regulations not yet covered?" → 28 covered today; PR welcome on src/data/dataset.json; the crosswalk format is documented in scope/03-resources-spec.md.
    - Skeptical comments → engage politely; do NOT delete or downvote.
 3. **Don't ask people to upvote** (instant HN ban + flag risk)
 
 Realistic outcomes:
-- Front-page (top 30): ~20% probability (improved from ~15% because the hosted endpoint = lower friction to try = more upvotes from quick-tryers)
+- Front-page (top 30): ~20% probability (the hosted endpoint = lower friction to try = more upvotes from quick-tryers)
 - 2nd page (30-90): ~40% probability
 - Just appears in /new: ~40% probability
 
-Even just-in-/new yields 100-300 GitHub stars and 8-20 quality DMs from regulated-industry engineers — which is the actual goal.
+Even a just-in-/new posting typically yields GitHub stars and useful feedback/issues from engineers working in the space — which is the point: surface it to people who'll use and improve it.
 
 ---
 
@@ -89,6 +89,6 @@ Even just-in-/new yields 100-300 GitHub stars and 8-20 quality DMs from regulate
 
 When one of the comments is high-quality and gets upvotes, drop a deeper reply citing specific code paths:
 
-> RE the DataSource abstraction — full file is at src/lib/data-source.ts:1-46. The Node version is src/lib/node-data-source.ts (uses readFileSync). The Worker version is in worker/src/worker.ts:24-29 (uses bundle-time text imports). The retrieval layer in src/lib/retrieval.ts has zero fs imports — that's the moat against runtime fragmentation as we add Deno Deploy / Bun / Edge runtimes in v0.3.
+> RE the DataSource abstraction — full file is at src/lib/data-source.ts:1-46. The Node version is src/lib/node-data-source.ts (uses readFileSync). The Worker version is in worker/src/worker.ts:24-29 (uses bundle-time text imports). The retrieval layer in src/lib/retrieval.ts has zero fs imports — that's what keeps it portable as we add Deno Deploy / Bun / Edge runtimes in v0.3.
 
 That kind of reply lifts the post in the HN ranking because each substantive sub-comment is signal.

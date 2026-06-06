@@ -58,11 +58,12 @@ Listed on:
 • Glama
 • Smithery
 
-Apache 2.0 (code) + CC BY 4.0 (dataset).
-Free for individual and commercial use. Patent grant included.
+Apache 2.0 (code) + CC BY 4.0 (dataset). Patent grant included.
 
-If you ship AI in a regulated industry,
-this should be the first MCP server in your config.
+If you work on AI in a regulated industry, hope it's useful —
+feedback and PRs welcome.
+
+Personal open-source project — views my own, not affiliated with my employer.
 
 Repo: github.com/uchit/mcp-regulated-ai-compliance
 Hosted: mcp.hellouchit.com/mcp
@@ -76,10 +77,8 @@ Hosted: mcp.hellouchit.com/mcp
 
 After posting:
 
-1. **Reply to your own post within 5 min** with a comment:
-   *"Glama auto-discovered all 6 tools / 56 resources / 5 prompts on first probe — glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance. Smithery did the same — smithery.ai/server/@uchit86/regulated-ai-compliance. Both verify before listing, so the trust badge is real."*
-2. **DM 3-5 ANZ compliance practitioners** who've engaged with your previous AI/compliance posts. One line: *"Shipped this today — thought of you. Curious what you'd want added in v0.3. The hosted endpoint at mcp.hellouchit.com/mcp means you can try it in 30 seconds without installing anything."* Builds repeat engagement.
-3. **Cross-post a condensed version to X** (~250 chars) linking the GitHub repo, same day.
+1. **Reply to your own post** with a comment noting that Glama and Smithery both auto-discovered the 6 tools / 56 resources / 5 prompts on first probe and verify servers before listing — glama.ai/mcp/servers/uchit/mcp-regulated-ai-compliance · smithery.ai/server/@uchit86/regulated-ai-compliance.
+2. **Cross-post a condensed version to X** (~250 chars) linking the GitHub repo, same day.
 
 ---
 
@@ -101,14 +100,12 @@ Apache 2.0. Works in every MCP client.
 
 ---
 
-## Engagement-window numbers to track
+## Project signals to watch (optional)
 
-| Metric | Source | Target after 48h |
-|---|---|---|
-| Post impressions | LinkedIn analytics | 8K (org reach) · 25K (with reshares) |
-| Profile-page clicks | LinkedIn analytics | 200 |
-| Repo stars | github.com/uchit/mcp-regulated-ai-compliance | +30 |
-| npm weekly downloads | `npm view @hellouchit/mcp-regulated-ai-compliance` | +50 |
-| Hosted-endpoint hits | Cloudflare worker dashboard → Requests | +500 |
-| Inbound DMs (qualified) | LinkedIn DMs | 5-10 |
-| hellouchit.com outbound clicks (from source_url in tool responses) | GA4 → outbound_click | +50 |
+Normal open-source curiosity metrics — no lead-gen / conversion tracking:
+
+| Metric | Source |
+|---|---|
+| Repo stars | github.com/uchit/mcp-regulated-ai-compliance |
+| npm weekly downloads | `npm view @hellouchit/mcp-regulated-ai-compliance` |
+| GitHub issues / PRs opened | repo Issues + Pull Requests tabs |

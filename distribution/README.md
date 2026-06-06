@@ -31,16 +31,14 @@ Updated 2026-05-30 — server is now fully shipped on all canonical surfaces. Re
 | Show HN | Wed 2026-06-03 to Fri 2026-06-05, 1-3am AEST | `04-show-hn.md` |
 | Substack: "How I'd ground a coding assistant in EU AI Act" | Day +5 | (next sprint draft) |
 
-## Success metrics — 7-day window after announcement
+## Project signals — 7-day window after announcement
 
-| Metric | Source | Target | Stretch |
-|---|---|---|---|
-| GitHub stars | Repo Insights → Traffic | +30 | +100 |
-| npm weekly downloads | `npm view @hellouchit/mcp-regulated-ai-compliance` | +50 | +200 |
-| Smithery installs | Smithery dashboard | +10 | +50 |
-| **Hosted endpoint hits** | Cloudflare Worker analytics | +500 | +5000 |
-| LinkedIn post impressions | LinkedIn analytics | 8K | 25K |
-| Inbound qualified DMs | LinkedIn DMs / GitHub Issues | 5 | 15 |
-| hellouchit.com outbound clicks (source_url) | GA4 → outbound_click | +50 | +200 |
+Normal open-source adoption metrics:
 
-The last metric is the actual ROI of the MCP server — every tool response embeds a `source_url` back to your dataset, anti-patterns, or playbooks. Each click = an AI agent in someone's IDE that footnoted your work.
+| Metric | Source |
+|---|---|
+| GitHub stars | Repo Insights → Traffic |
+| npm weekly downloads | `npm view @hellouchit/mcp-regulated-ai-compliance` |
+| Smithery installs | Smithery dashboard |
+| Hosted endpoint hits | Cloudflare Worker analytics |
+| GitHub issues / PRs opened | repo Issues + Pull Requests tabs |

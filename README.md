@@ -4,6 +4,8 @@
 >
 > Free + open-source (Apache 2.0, dataset CC BY 4.0). Built by Uchit Vyas.
 
+> **Disclaimer:** This is a personal, open-source, non-commercial project. Views are my own. It is not affiliated with, endorsed by, or representative of my employer.
+
 ---
 
 ## Why this exists
@@ -143,20 +145,7 @@ See `scope/01-architecture.md` for the dev-loop details.
 
 ## License
 
-**Code:** Apache 2.0. Free for individual + commercial use. Patent grant included.
+**Code:** Apache 2.0. Patent grant included.
 **Dataset** (regulations × controls × tooling, anti-patterns, playbooks, crosswalks): CC BY 4.0 — attribution to hellouchit.com required.
 
-If you ship a commercial product on top of this, please consider [sponsoring on GitHub](https://github.com/sponsors/uchit).
-
----
-
-## Looking for a hosted / managed version?
-
-For organisations needing a multi-tenant hosted instance with:
-
-- SSO + audit log + admin console
-- White-labelled dataset extensions (your own controls + crosswalks added alongside the canonical ones)
-- Customer-specific playbook variants
-- SLA + dedicated support
-
-→ **The managed/SaaS edition is on the roadmap.** Sign up at [hellouchit.com/letters](https://hellouchit.com/letters) to be notified when it ships, or email **contact@hellouchit.com** to be early-access.
+This is a personal, non-commercial project shared for the community. Contributions and issues are welcome on GitHub.
